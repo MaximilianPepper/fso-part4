@@ -52,6 +52,29 @@ test("id identifier exists", async () => {
   assert.strictEqual(hasId, true);
 });
 
+test("a blog can be added ", async () => {
+  const newBlog = {
+    title: "Type wars",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    likes: 2,
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const response = await api.get("/api/blogs");
+
+  const contents = response.body.map((r) => r.title);
+
+  assert.strictEqual(response.body.length, initalBlogs.length + 1);
+
+  assert(contents.includes("Type wars"));
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
