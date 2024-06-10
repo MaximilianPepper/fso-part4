@@ -9,7 +9,7 @@ const Blog = require("../models/blogs");
 
 const initalBlogs = [
   {
-    _id: "5a422a851b54a676234d17f7",
+    id: "5a422a851b54a676234d17f7",
     title: "React patterns",
     author: "Michael Chan",
     url: "https://reactpatterns.com/",
@@ -17,7 +17,7 @@ const initalBlogs = [
     __v: 0,
   },
   {
-    _id: "5a422aa71b54a676234d17f8",
+    id: "5a422aa71b54a676234d17f8",
     title: "Go To Statement Considered Harmful",
     author: "Edsger W. Dijkstra",
     url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
@@ -33,7 +33,6 @@ beforeEach(async () => {
   blogObj = new Blog(initalBlogs[1]);
   await blogObj.save();
 });
-
 test("notes are returned as json", async () => {
   await api
     .get("/api/blogs")
@@ -41,12 +40,18 @@ test("notes are returned as json", async () => {
     .expect("Content-Type", /application\/json/);
 });
 
-after(async () => {
-  await mongoose.connection.close();
-});
-
 test("there are two blogs", async () => {
   const response = await api.get("/api/blogs");
 
-  assert.strictEqual(response.body.length, 2);
+  assert.strictEqual(response.body.length, initalBlogs.length);
+});
+
+test("id identifier exists", async () => {
+  const response = await api.get("/api/blogs");
+  const hasId = response.body.every((obj) => obj.hasOwnProperty("id"));
+  assert.strictEqual(hasId, true);
+});
+
+after(async () => {
+  await mongoose.connection.close();
 });
