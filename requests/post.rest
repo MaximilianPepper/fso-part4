@@ -2,9 +2,10 @@ POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
 
 {
-    "title": "works",
-    "author": "took so long :(",
+    "title": "blogt123123",
+    "author": "worsk?",
     "url": "no url",
-    "likes": 0
-}
+    "likes": 0,
+    "userId": "6668b373f34b864d4c9647cc"
+    }
 
