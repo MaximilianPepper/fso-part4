@@ -1,11 +1,11 @@
-POST http://localhost:3003/api/blogs HTTP/1.1
+POST http://localhost:3003/api/blogs 
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2NjhiMzczZjM0Yjg2NGQ0Yzk2NDdjYyIsImlhdCI6MTcxODE0MDkxN30.oFf5UGW8O_GBoEOZEJdx8VPSGRT7Ha_u_8bXFAHAVrc
 
 {
-    "title": "blogt123123",
-    "author": "worsk?",
-    "url": "no url",
-    "likes": 0,
-    "userId": "6668b373f34b864d4c9647cc"
+    "title": "ahhhnewew",
+    "author": "wordsadssk?",
+    "url": "nourl1",
+    "likes": 0
     }
 
