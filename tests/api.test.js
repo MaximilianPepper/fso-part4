@@ -1,4 +1,4 @@
-const { test, after, beforeEach } = require("node:test");
+const { test, after, beforeEach, describe } = require("node:test");
 const assert = require("node:assert");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
@@ -74,7 +74,39 @@ test("a blog can be added ", async () => {
 
   assert(contents.includes("Type wars"));
 });
+//delete
+describe("deletion of a blog", () => {
+  test("succeeds with status code 204 if id is valid", async () => {
+    const startingBlogs = await blogsInDb();
+    const blogtoDelete = startingBlogs[0];
 
+    await api.delete(`/api/blogs/${blogtoDelete.id}`).expect(204);
+    const updatedBlogs = await blogsInDb();
+    const titles = updatedBlogs.map((r) => r.title);
+    assert(!titles.includes(blogtoDelete.title));
+  });
+});
+
+// update likes (increment by 1)
+
+describe("updating likes of a blog", () => {
+  test("succeeds incrementing likes by one with a valid id", async () => {
+    const startingBlogs = await blogsInDb();
+    const blogToUpdate = startingBlogs[0];
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: blogToUpdate.likes + 1 })
+      .expect(200);
+    const updatedBlogs = await blogsInDb();
+    const updatedBlog = updatedBlogs.find((e) => e.id === blogToUpdate.id);
+    assert(blogToUpdate.likes + 1 === updatedBlog.likes);
+  });
+});
 after(async () => {
   await mongoose.connection.close();
 });
+
+async function blogsInDb() {
+  const blog = await Blog.find({});
+  return blog.map((blog) => blog.toJSON());
+}
